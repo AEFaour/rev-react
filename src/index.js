@@ -1,10 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import Client from "./Client";
-import {
-  Typography,
-  Card,
-} from "@material-ui/core";
+import Form from "./Form";
+import { Typography, Card } from "@material-ui/core";
 
 class App extends React.Component {
   state = {
@@ -12,36 +10,21 @@ class App extends React.Component {
       { id: 1, nom: "Guerout", prenom: "Violette" },
       { id: 2, nom: "Faour", prenom: "Anas" },
       { id: 3, nom: "Du Chars", prenom: "Natacha" }
-    ],
-    nouveauClient: ""
+    ]
   };
 
   handleDelete = id => {
-  
     const clients = this.state.clients.slice();
-    const index = clients.findIndex(client =>  client.id === id
-
-    );
+    const index = clients.findIndex(client => client.id === id);
     clients.splice(index, 1);
 
-    this.setState({...clients, clients});
-
+    this.setState({ ...clients, clients });
   };
 
-  handleSubmit = (event) => {
-    event.preventDefault();
-    const id = new Date().getTime();
-    const nom = this.state.nouveauClient;
+  handleAdd = client=> {
     const clients = [...this.state.clients];
-    clients.push({id, nom});
-    this.setState({clients, nouveauClient: ''});
-  }
-
-  handleChange = (event) => {
-    const value = event.currentTarget.value; 
-    this.setState({nouveauClient: value});
-    console.log(event.currentTarget.value);
-
+    clients.push(client);
+    this.setState({ clients});
   }
 
   render() {
@@ -54,13 +37,9 @@ class App extends React.Component {
         </Typography>
 
         {this.state.clients.map(client => (
-          <Client details={client} onDelete={this.handleDelete}/>
+          <Client details={client} onDelete={this.handleDelete} />
         ))}
-        <form onSubmit={this.handleSubmit}>
-          <input type="text" placeholder="Ajouter un client" value={this.state.nouveauClient} onChange={this.handleChange} />
-          <button>Confirmer</button>
-        </form>
-
+        <Form onAdd={this.handleAdd}/>
       </Card>
     );
   }
